@@ -1,82 +1,64 @@
-# Lightweight React Template for KAVIA
+# Simple To‑do (React)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+A lightweight To‑do list app with a clean UI. Local‑first CRUD with optional API sync. Built with React and vanilla CSS.
 
 ## Features
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+- Add, edit (inline), delete, and mark tasks complete
+- Filter by All / Active / Completed
+- Toggle all, clear completed
+- Local storage persistence
+- Optional API integration via environment variables
+- Accessible and keyboard-friendly
 
-## Getting Started
+## Quick start
 
-In the project directory, you can run:
+- Install: `npm install`
+- Run dev: `npm start` (http://localhost:3000)
+- Test: `npm test`
+- Build: `npm run build`
 
-### `npm start`
+## Structure
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- `src/components/Header.jsx`
+- `src/components/TodoInput.jsx`
+- `src/components/TodoItem.jsx`
+- `src/components/TodoList.jsx`
+- `src/hooks/useTodos.js` — local-first state + optional API sync
+- `src/services/localStorageService.js`
+- `src/services/apiService.js`
+- `src/utils/env.js`
+- `src/App.js`, `src/App.css`
 
-### `npm test`
+## Environment variables
 
-Launches the test runner in interactive watch mode.
+Create a `.env` based on `.env.example`. The app reads CRA-style variables (must begin with REACT_APP_).
 
-### `npm run build`
+- `REACT_APP_API_BASE` — Optional REST API base URL, e.g. `https://api.example.com`
+- `REACT_APP_BACKEND_URL` — Alternative base URL (fallback)
+- `REACT_APP_WS_URL` — If only WS URL is available, origin is derived
+- `REACT_APP_NODE_ENV` — Environment label for display (dev/stage/prod)
+- Others are supported by template but not required for To‑do
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+When no API base is detected, the app runs entirely offline using localStorage.
 
-## Customization
+## API expectations (optional)
 
-### Colors
+If you wire up a backend, the app will attempt:
+- `GET  /health` — returns 200 when alive
+- `POST /todos` — body: full todo
+- `PATCH /todos/:id` — body: partial `{ text?, completed? }`
+- `DELETE /todos/:id`
+- `POST /todos/bulk-delete` — `{ ids: string[] }`
+- `POST /todos/bulk-update` — `{ items: { id, completed }[] }`
 
-The main brand colors are defined as CSS variables in `src/App.css`:
+Failures do not block local usage.
 
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
-```
+## Styling
 
-### Components
+Follows the style guide accents (#3b82f6 primary, #06b6d4 success) with a modern light theme and dark mode toggle.
 
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
+## Accessibility
 
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
-
-## Learn More
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Keyboard submit/edit
+- ARIA labels for controls and live regions for status
